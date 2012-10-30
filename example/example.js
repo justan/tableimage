@@ -6,7 +6,7 @@ var fs = require('fs')
   ;
 
 var img = new Image;
-fs.readFile('./favicon.ico', function(err, buffer){
+fs.readFile('./canvas.png', function(err, buffer){
   img.src = buffer;
   fs.writeFileSync('./out.html', convert(img, [255, 255, 255]), 'utf8');
 });
