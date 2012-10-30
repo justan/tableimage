@@ -1,0 +1,19 @@
+{
+  "name": "tableimage",
+  "version": "0.0.0",
+  "description": "convert image to HTML table",
+  "main": "index.js",
+  "scripts": {
+    "test": ""
+  },
+  "repository": "",
+  "dependencies": {
+    "canvas": "*"
+  },
+  "keywords": [
+    "image",
+    "table"
+  ],
+  "author": "justan",
+  "license": "MIT"
+}

@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html lang=zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<title>tableImage example</title>
+  <script type="text/javascript" src="../lib/tableimage.js"></script>
+</head>
+<body>
+	<img src="favicon.ico" id="pic" alt="github-logo" />
+  <div id="out"></div>
+<script type="text/javascript">
+(function(){
+  var img = document.getElementById('pic');
+  img.onload = function(){
+    var table = tableImage.convert(img, [255, 255, 255]);
+    document.getElementById('out').innerHTML = table;
+  }
+})();
+</script>
+</body>
+</html>
