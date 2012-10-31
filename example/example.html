@@ -4,17 +4,34 @@
 	<meta charset="UTF-8">
 	<title>tableImage example</title>
   <script type="text/javascript" src="../lib/tableimage.js"></script>
+  <script type="text/javascript">
+  </script>
 </head>
 <body>
-	<img src="canvas.png" id="pic" alt="github-logo" />
+	<img id="pic" alt="github-logo" />
   <div id="out"></div>
 <script type="text/javascript">
+var doSth;
 (function(){
-  var img = document.getElementById('pic');
-  img.onload = function(){
-    var table = tableImage.convert(img, [255, 255, 255]);
-    document.getElementById('out').innerHTML = table;
-  }
+  function convert(url){
+    var img = document.getElementById('pic')
+      , out = document.getElementById('out');
+      
+    img.onload = function(){
+      var table = tableImage.convert(img, true);
+      out.innerHTML = table;
+    };
+    img.onerror = function(){
+      out.innerHTML = 'image load failed';
+    };
+    img.src = url;
+  }  
+  doSth = function(){
+    var url = document.getElementById('picUrl').value;
+    convert(url);
+  };
+  
+  convert('taiji.png');
 })();
 </script>
 </body>
