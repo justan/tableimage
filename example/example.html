@@ -18,7 +18,10 @@ var doSth;
       , out = document.getElementById('out');
       
     img.onload = function(){
-      var table = tableImage.convert(img, true);
+      var table = tableImage.convert(img, {
+          ignoreOldIE: true
+        , background: [255, 255, 255]
+      });
       out.innerHTML = table;
     };
     img.onerror = function(){
