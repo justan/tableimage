@@ -21,12 +21,15 @@ var doSth;
       var table = tableImage.convert(img, {
           ignoreOldIE: true
         , background: [255, 255, 255]
+        , maxWidth: 90
+        , maxHeight: 80
       });
       out.innerHTML = table;
     };
     img.onerror = function(){
       out.innerHTML = 'image load failed';
     };
+    img.crossOrigin = '';
     img.src = url;
   }  
   doSth = function(){
