@@ -1,12 +1,15 @@
 {
   "name": "tableimage",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "convert image to HTML table",
   "main": "index.js",
   "scripts": {
     "test": ""
   },
-  "repository": "",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/justan/tableimage.git"
+  },
   "dependencies": {
     "canvas": "*"
   },
@@ -15,5 +18,9 @@
     "table"
   ],
   "author": "justan",
-  "license": "MIT"
+  "license": "MIT",
+  "directories": {
+    "example": "example"
+  },
+  "devDependencies": {}
 }
