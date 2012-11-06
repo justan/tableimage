@@ -1,6 +1,6 @@
 {
   "name": "tableimage",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "convert image to HTML table",
   "main": "index.js",
   "scripts": {
