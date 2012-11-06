@@ -1,0 +1,151 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<title>tableImage example</title>
+  <script type="text/javascript" src="lib/tableimage.js"></script>
+  <script type="text/javascript">
+  </script>
+  <style type="text/css">
+    body{
+      margin: 50px;
+      background-color: #e9e9e9;
+      color: #333;
+    }
+    
+    .control{
+      font-size: 18px;
+    }
+    #picUrl{
+      width: 480px;
+    }
+    #res{
+      width: 400px;
+      height: 250px;
+    }
+    
+    
+    .loading{ position: relative; }
+    .loading:after{
+      background: url("loading.gif") no-repeat center;
+      content: ".";
+      z-index: 2;
+      display: block;
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    
+    .i{
+      padding: 5px;
+      font-size: 18px;
+    }
+    
+    .b{
+      display: inline-block;
+      vertical-align: top;
+      width: 45%;
+      overflow: hidden;
+    }
+    
+  </style>
+</head>
+<body>
+  <a href="https://github.com/justan/tableimage">
+    <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub">
+  </a>
+  <h1>tableimage</h1>
+    <p>特点: </p>
+    <ol>
+    	<li>生成的代码可用于在电子邮件中直接显示图片. </li>
+    	<li>甚至可以将 png 图片完美的在 ie6 中显示.</li>
+    	<li>node.js / 浏览器支持. </li>
+    </ol>
+  
+  <div class="control">
+  <p>请输入图片的地址：</p>
+  <input class="i" type="url" id="picUrl" name="picUrl" value="http://justan.github.com/tableimage/taiji.png" />
+  <button class="i" id="go" onclick="doSth()">转换</button>
+  <label for="max-width">max-width: 
+    <input class="i" type="number" id="max-width" value="250" size="3" maxLength="3" pattern="\d{0,3}" />
+  </label>
+  
+  <label for="oldie">支持 IE 6 / 7 / 8?
+    <input type="checkbox" name="oldid" id="oldie"/>
+  </label>
+  </div>
+  
+  <hr />
+  
+  <div id="show">
+    <div class="b">
+      <p>原图：</p>
+      <div id="origin">
+        <img id="pic" alt="原始图片" />
+      </div>
+    </div>
+    <div class="b">
+      <p>HTML Table 图：</p>
+      <div id="out"></div>
+    </div>
+    <div class="b">
+      <p>代码: </p>
+      <textarea id="res"></textarea>
+    </div>
+  </div>
+<script type="text/javascript">
+var doSth;
+(function(){
+  var img = document.getElementById('pic')
+    , out = document.getElementById('out')
+    , show = document.getElementById('show')
+    , maxWidth = document.getElementById('max-width')
+    , res = document.getElementById('res')
+    , oldie = document.getElementById('oldie')
+    , go = document.getElementById('go')
+    , origin = document.getElementById('origin')
+    ;
+    
+  function convert(url){
+    origin.className = "loading";
+    img.onload = function(){
+      var table = tableImage.convert(img, {
+          ignoreOldIE: !oldie.checked
+        //, background: [255, 255, 255]
+        , maxWidth: maxWidth.value
+        //, maxHeight: 80
+      });
+      out.innerHTML = table;
+      res.value = table;
+      origin.className = "";
+    };
+    img.onerror = function(){
+      out.innerHTML = 'image load failed';
+      origin.className = "";
+    };
+    img.crossOrigin = '';
+    img.src = url;
+  }  
+  doSth = function(){
+    var url = document.getElementById('picUrl').value;
+    url = url.replace(/^https\:\/\//, 'http://');
+    var proxy = 'http://proxy.whosemind.net/?url='
+    convert(proxy + decodeURIComponent(url));
+  };
+  
+  if(isCanvasSupported()){
+    doSth();
+  }else{
+    document.body.innerHTML = "<strong>请用一个现代浏览器打开该页面...</strong>"
+  }
+  
+  function isCanvasSupported(){
+    var elem = document.createElement('canvas');
+    return !!(elem.getContext && elem.getContext('2d'));
+  }
+})();
+</script>
+</body>
+</html>
