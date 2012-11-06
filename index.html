@@ -57,13 +57,14 @@
     <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub">
   </a>
   <h1>tableimage</h1>
-    <p>特点: </p>
     <ol>
     	<li>生成的代码可用于在电子邮件中直接显示图片. </li>
     	<li>甚至可以将 png 图片完美的在 ie6 中显示.</li>
     	<li>node.js / 浏览器支持. </li>
+    	<li>不要转换大尺寸图片而不设 max-width. </li>
+    	<li>不要用来发垃圾邮件. </li>
     </ol>
-  
+  <hr />
   <div class="control">
   <p>请输入图片的地址：</p>
   <input class="i" type="url" id="picUrl" name="picUrl" value="http://justan.github.com/tableimage/taiji.png" />
@@ -111,14 +112,20 @@ var doSth;
   function convert(url){
     origin.className = "loading";
     img.onload = function(){
-      var table = tableImage.convert(img, {
-          ignoreOldIE: !oldie.checked
-        //, background: [255, 255, 255]
-        , maxWidth: maxWidth.value
-        //, maxHeight: 80
-      });
-      out.innerHTML = table;
-      res.value = table;
+      try{
+        var table = tableImage.convert(img, {
+            ignoreOldIE: !oldie.checked
+          //, background: [255, 255, 255]
+          , maxWidth: maxWidth.value
+          //, maxHeight: 80
+        });
+        out.innerHTML = table;
+        res.value = table;
+      }catch(e){
+        if(e.code === 18){
+          out.innerHTML = "<strong>你需要用一个更现代的浏览器. 比如 firefox, chrome 的最新版</strong>"
+        }
+      }
       origin.className = "";
     };
     img.onerror = function(){
@@ -138,7 +145,7 @@ var doSth;
   if(isCanvasSupported()){
     doSth();
   }else{
-    document.body.innerHTML = "<strong>请用一个现代浏览器打开该页面...</strong>"
+    document.body.innerHTML = '<strong><a href="https://github.com/justan/tableimage">tableImage</a>: 请用一个现代浏览器打开该页面...</strong>'
   }
   
   function isCanvasSupported(){
