@@ -6,7 +6,10 @@
   "scripts": {
     "test": ""
   },
-  "repository": "",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/justan/tableimage.git"
+  },
   "dependencies": {
     "canvas": "*"
   },
@@ -15,5 +18,9 @@
     "table"
   ],
   "author": "justan",
-  "license": "MIT"
+  "license": "MIT",
+  "directories": {
+    "example": "example"
+  },
+  "devDependencies": {}
 }
