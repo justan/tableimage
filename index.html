@@ -69,6 +69,8 @@
   <div class="control">
     <p>图片的地址：</p>
     <input class="i" type="url" id="picUrl" name="picUrl" value="http://justan.github.com/tableimage/taiji.png" />
+    <br />
+    <br />
     <label for="max-width">max-width: 
       <input class="i" type="number" id="max-width" value="250" size="3" maxLength="3" pattern="\d{0,3}" />
     </label>
@@ -78,6 +80,9 @@
     
     <label for="oldie">生成的代码是否需要支持 IE 6/7/8?
       <input type="checkbox" name="oldid" id="oldie"/>
+    </label>
+    <label for="bg">背景色(可选): 
+      #<input class="i" type="text" id="bg" size="6" maxLength="6" pattern="([0-9a-f]{6})?" /> 
     </label>
     <br />
     <button class="i" id="go" onclick="doSth()">转换</button>
@@ -97,7 +102,7 @@
       <div id="out"></div>
     </div>
     <div class="b">
-      <p>代码: </p>
+      <p>代码<span id="len"></span>: </p>
       <textarea id="res"></textarea>
     </div>
   </div>
@@ -113,20 +118,32 @@ var doSth;
     , oldie = document.getElementById('oldie')
     , go = document.getElementById('go')
     , origin = document.getElementById('origin')
+    , len = document.getElementById('len')
+    , bg = document.getElementById('bg')
     ;
     
   function convert(url){
     origin.className = "loading";
     img.onload = function(){
       try{
+        var background;
+        if(bg.value){
+          background = [
+              parseInt(bg.value.substring(0, 2), 16)
+            , parseInt(bg.value.substring(2, 4), 16)
+            , parseInt(bg.value.substring(4, 6), 16)
+          ];
+          console.log(background)
+        }
         var table = tableImage.convert(img, {
             ignoreOldIE: !oldie.checked
-          //, background: [255, 255, 255]
+          , background: background
           , maxWidth: maxWidth.value
           , maxHeight: maxHeight.value
         });
         out.innerHTML = table;
         res.value = table;
+        len.innerHTML = ' (' + table.length + ')';
       }catch(e){
         if(e.code === 18){
           out.innerHTML = "<strong>你需要用一个更现代的浏览器. 比如 firefox, chrome 的最新版</strong>"
