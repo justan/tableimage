@@ -67,8 +67,8 @@
     </ol>
   <hr />
   <div class="control">
-    <p>图片的地址：</p>
-    <input class="i" type="url" id="picUrl" name="picUrl" value="http://justan.github.com/tableimage/taiji.png" />
+    <label for="file">选择图片:
+      <input type="file" name="file" id="file" accept="image/*"></label>
     <br />
     <br />
     <label for="max-width">max-width: 
@@ -94,7 +94,7 @@
     <div class="b">
       <p>原图：</p>
       <div id="origin">
-        <img id="pic" alt="原始图片" />
+        <img id="pic" alt="原始图片" src="./taiji.png" />
       </div>
     </div>
     <div class="b">
@@ -120,50 +120,49 @@ var doSth;
     , origin = document.getElementById('origin')
     , len = document.getElementById('len')
     , bg = document.getElementById('bg')
+    , file = document.getElementById('file')
     ;
+
+  file.addEventListener('change', function(e) {
+    var input = e.target
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            img.src = e.target.result
+        }
+
+        reader.readAsDataURL(input.files[0]);
+    }
+  })
     
-  function convert(url){
-    origin.className = "loading";
-    img.onload = function(){
-      try{
-        var background;
-        if(bg.value){
-          background = [
-              parseInt(bg.value.substring(0, 2), 16)
-            , parseInt(bg.value.substring(2, 4), 16)
-            , parseInt(bg.value.substring(4, 6), 16)
-          ];
-          console.log(background)
-        }
-        var table = tableImage.convert(img, {
-            ignoreOldIE: !oldie.checked
-          , background: background
-          , maxWidth: maxWidth.value
-          , maxHeight: maxHeight.value
-        });
-        out.innerHTML = table;
-        res.value = table;
-        len.innerHTML = ' (' + table.length + ')';
-      }catch(e){
-        if(e.code === 18){
-          out.innerHTML = "<strong>你需要用一个更现代的浏览器. 比如 firefox, chrome 的最新版</strong>"
-        }
+  function convert(){
+    try{
+      var background;
+      if(bg.value){
+        background = [
+            parseInt(bg.value.substring(0, 2), 16)
+          , parseInt(bg.value.substring(2, 4), 16)
+          , parseInt(bg.value.substring(4, 6), 16)
+        ];
+        console.log(background)
       }
-      origin.className = "";
-    };
-    img.onerror = function(){
-      out.innerHTML = 'image load failed';
-      origin.className = "";
-    };
-    img.crossOrigin = '';
-    img.src = url;
+      var table = tableImage.convert(img, {
+          ignoreOldIE: !oldie.checked
+        , background: background
+        , maxWidth: maxWidth.value
+        , maxHeight: maxHeight.value
+      });
+      out.innerHTML = table;
+      res.value = table;
+      len.innerHTML = ' (' + table.length + ')';
+    }catch(e){
+      if(e.code === 18){
+        out.innerHTML = "<strong>你需要用一个更现代的浏览器. 比如 firefox, chrome 的最新版</strong>"
+      }
+    }
   }  
-  doSth = function(){
-    var url = document.getElementById('picUrl').value;
-    url = url.replace(/^https\:\/\//, 'http://');
-    var proxy = 'http://proxy.whosemind.net/?url='
-    convert(proxy + decodeURIComponent(url));
-  };
+  doSth = convert;
   
   if(isCanvasSupported()){
     doSth();
